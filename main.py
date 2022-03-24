@@ -76,8 +76,10 @@ class wordGuesser:
             self.possibleWordsObj.getRidOfLetter(letter)
       guessCount += 1
       self.guess = self.possibleWordsObj.possibleWordsList[0]
-    
-    return "".join(self.finalWord)
+    try:
+      return "".join(self.finalWord)
+    except:
+      return "We could not succesfully determine the word in six tries"
 def run():
   possibleWordsReader = []
   with open("fiveCharacterWords.txt","r") as reader:
@@ -85,6 +87,6 @@ def run():
       possibleWordsReader.append(line.strip("\n"))
     possibleWordsObj = possibleWords(possibleWordsReader)
     guesser = wordGuesser("adieu", possibleWordsObj)
-    print(f"Your word is: {guesser.solvePuzzle()}")
+    print(f"The answer to the wordle is: {guesser.solvePuzzle()}")
 if __name__ == "__main__":
   run()
