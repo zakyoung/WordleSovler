@@ -51,7 +51,7 @@ class wordGuesser:
   def solvePuzzle(self):
     guessCount = 0
     yellows = []
-    while guessCount <= 6 and 0 in self.finalWord:
+    while guessCount < 13 and 0 in self.finalWord:
       print(f"Guessed Word: {self.guess}")
       isRealWord = input("Is this a word you can guess type y for yes and n for no: ")
       while isRealWord == "n":
@@ -70,19 +70,22 @@ class wordGuesser:
           self.possibleWordsObj.getRidOfLetterAtIndex(letter, index)
           self.possibleWordsObj.mustIncludeLetter(letter)
         else:
-          if letter in yellows:
+          if letter in yellows or letter in self.finalWord:
             self.possibleWordsObj.getRidOfLetterAtIndex(letter, index)
           else:
             self.possibleWordsObj.getRidOfLetter(letter)
       guessCount += 1
-      self.guess = self.possibleWordsObj.possibleWordsList[0]
+      if self.finalWord == [0,0,0,0,0] and not len(yellows):
+        self.guess = "proxy"
+      else:
+        self.guess = self.possibleWordsObj.possibleWordsList[0]
     try:
       return "".join(self.finalWord)
     except:
-      return "We could not succesfully determine the word in six tries"
+      return f"We could not succesfully determine the word in six tries the word was probably {self.possibleWordsObj.possibleWordsList[0]}"
 def run():
   possibleWordsReader = []
-  with open("fiveCharacterWords.txt","r") as reader:
+  with open("specialOrdering.txt","r") as reader:
     for line in reader:
       possibleWordsReader.append(line.strip("\n"))
     possibleWordsObj = possibleWords(possibleWordsReader)
